@@ -12,5 +12,5 @@
      export https_proxy=proxy_ip:proxy_port  
 * subscribe the host
 * subscribe to EPEL
-  `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --no-check-certificate [--no-check-certificate]`
+  `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --no-check-certificate [--no-check-certificate]`  
   `dnf -y localinstall epel-release-latest-8.noarch.rpm`

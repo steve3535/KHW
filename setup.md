@@ -12,7 +12,7 @@
      export https_proxy=proxy_ip:proxy_port  
 * subscribe the host  
 * subscribe to EPEL  
-  `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --no-check-certificate [--no-check-certificate]`  
+  `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm [--no-check-certificate]`  
   `dnf -y localinstall epel-release-latest-8.noarch.rpm`
 * Download and install a container runtime (containerd)
   `export https_proxy=172.22.108.7:80; wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz`

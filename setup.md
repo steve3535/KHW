@@ -31,4 +31,29 @@
   * ` wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz`
   * `tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz`
   * `nerdctl run -d --name nginx -p 80:80 nginx:alpine`
-  * 
+
+* Download the kubernetes tools: kubeadm, kubectl and kubelet
+```bash
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+proxy=http://proxy_ip:proxy_port
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+EOF
+```
+`dnf install -y kubeadm kubectl kubelet --disableexcludes=kubernetes`  
+ 
+### KUBEADM  
+* Fix the huge proxy problem that will happen upon **kubeadm init**
+  
+  >systemctl set-environment https_proxy=lu726.lalux.local:80
+  >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1
+  >systemctl show-environment
+  >systemctl restart container
+  
+* 
+    

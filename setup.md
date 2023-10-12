@@ -50,10 +50,10 @@ EOF
 ### KUBEADM  
 * Fix the huge proxy problem that will happen upon **kubeadm init**
   
-  >systemctl set-environment https_proxy=lu726.lalux.local:80
-  >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1
-  >systemctl show-environment
-  >systemctl restart container
+  >systemctl set-environment https_proxy=lu726.lalux.local:80  
+  >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1  
+  >systemctl show-environment  
+  >systemctl restart container  
   
 * 
     

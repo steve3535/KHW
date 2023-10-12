@@ -14,3 +14,21 @@
 * subscribe to EPEL  
   `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --no-check-certificate [--no-check-certificate]`  
   `dnf -y localinstall epel-release-latest-8.noarch.rpm`
+* Download and install a container runtime (containerd)
+  `export https_proxy=172.22.108.7:80; wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz`
+  `sudo -E wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service`
+  `systemctl daemon-reload && systemctl enable --now containerd`
+* Download and install low level container engine (runc)
+  * `wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64`
+  * `sudo install -m 755 runc.amd64 /usr/local/sbin/runc`
+* Setup minimum CNI plugins  
+  `mkdir -pv /opt/cni/bin`  
+  `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
+  `tar Cxzvf /opt/cni/bin/ cni-plugins-linux-amd64-v1.3.0.tgz`  
+  
+* Test the CRI
+  * pull some image: `sudo -E /usr/local/bin/ctr image pull docker.io/library/alpine:latest`
+  * ` wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz`
+  * `tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz`
+  * `nerdctl run -d --name nginx -p 80:80 nginx:alpine`
+  * 

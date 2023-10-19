@@ -15,4 +15,14 @@ the apps (processes runnin in pods) use *Service Accounts*
 To achieve the access at a namespace level, the object tools used are: **Role**, **User** or **ServiceAccount** and **RoleBinding** to tie them all  
 To achieve the access at a cluster level, the object tools used are: **ClusterRole**, **User** or **ServiceAccount** and **ClusterRoleBinding** to tie them all  
 
+### Privileges of the pods/containers in their running environment
+
+Here the governor is **securityContext** property  
+the property can be set either at the Pod level or the container level or both (container level having precedence)  
+
+### User management by certificates  
+
+### Additional notes  
+* `kubectl create role`
+
 

@@ -1,0 +1,14 @@
+network:
+  ethernets:
+    enp1s0:
+      addresses:
+      - {{ ip }}/24
+      nameservers:
+        addresses:
+        - {{ dns }}
+        search: []
+      routes:
+      - to: default
+        via: {{ gateway }}
+  version: 2
+

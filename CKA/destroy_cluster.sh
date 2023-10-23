@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ $# -eq 0 ];then
-	echo -e "Usage: ./destroy_cluster <id_cluster>\n\te.g. ./destroy_cluster 101\n"
+	echo -e "Usage: ./destroy_cluster <id_cluster>\n\te.g. ./destroy_cluster cluster-100\n"
 	exit 127
 fi
 

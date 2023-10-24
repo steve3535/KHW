@@ -144,6 +144,29 @@ spec:
  * `sudo apt install -y kubeadm=1.26.8-00 kubelet=1.26.8-00 kubectl=1.26.8-00` si ce nest pas specifié en une ligne, tu vas endup avec dautres versions plus recentes de kubectl ou de kubelet  
  * lerreur de conexion de kubectl a l'API server peut des fois etre du au fait que le current-context nest pas set dans le fichier kubeconfig
  * lister toutes les resources avec `kubectl api-resources`
+ * pour fixer le default context, la commande cest: `kubectl --kubeconfig shine.config use-context ...`  
+ * Attention au nom de l'objet user dans le kubeconfig: ca doit matcher le username --> sinon on aura unprompt pour le password 
+ * souvent je fais lerreur decrire busysbox au lieu de busybox: `kubectl describe` to the rescue !!!
+ * WOW ! jai fait ceci: `etcdctl --cacert /etc/kubernetes/pki/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key --endpoints=localhost:2379 endpoint status`, et ca plantait .. en effet le certif CA est **/etc/kubernetes/pki/etcd/ca.crt** et pas **/etc/kubernetes/pki/ca.crt** (cest crictl logs <hash etcd container> qui ma sauvé)  
+ * un provisioner beaucoup plus simple que nfs: **kubernetes.io/no-provisioner**
+ * rapple du flow avec storageclass:
+   * creer le storageclass (avec eventuellement *allowVolumeExpansion: true*)
+   * creer le pv, puis le pvc en referencant le storageclass
+ * syntaxe a utiliser pour les scripts dans les pods:  
+   ```bash
+   args:
+   - /bin/sh
+   - -c
+   - >
+     while true;
+     do
+       ...;
+       ...;
+     done 
+   ```
+   * bien preter attention aux ; et a lindentation 
+   * metrics server -a bucher - `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/component.yaml`  
+     * ensuite editer le deploy (c dans kube-system) et ajouter en argument du container: **--kubelet-insecure-tls**  
     
   
   

@@ -1,25 +1,15 @@
-master1-template ansible_host=192.168.122.31
-master2-template ansible_host=192.168.122.32
-worker1-template ansible_host=192.168.122.33
-worker2-template ansible_host=192.168.122.34 
-worker3-template ansible_host=192.168.122.35 
+[cluster1]
+cluster1-controlplane1 ansible_host=192.168.122.10 hostname=cluster1-controlplane1 
+cluster1-node1 ansible_host=192.168.122.11 hostname=cluster1-node1 
+cluster1-node2 ansible_host=192.168.122.12 hostname=cluster1-node2 
 
-[cluster-10]
-master1-cluster-10 ansible_host=192.168.122.31 hostname=master1-cluster-10 ip_addr=192.168.122.10
-node1-cluster-10   ansible_host=192.168.122.33 hostname=node1-cluster-10 ip_addr=192.168.122.11
-node2-cluster-10   ansible_host=192.168.122.34 hostname=node2-cluster-10 ip_addr=192.168.122.12
+[cluster2]
+cluster2-controlplane1 ansible_host=192.168.122.20 hostname=cluster2-controlplane1 
+cluster2-node1 ansible_host=192.168.122.21 hostname=cluster2-node1               
 
-
-[cluster-20]
-master1-cluster-200 ansible_host=192.168.122.31 hostname=master1-cluster-20 ip_addr=192.168.122.20
-node1-cluster-200   ansible_host=192.168.122.33 hostname=node1-cluster-20 ip_addr=192.168.122.21
-
-[cluster-30]
-master1-cluster-30 ansible_host=192.168.122.31 hostname=master1-cluster-30 ip_addr=192.168.122.30
-node1-cluster-30   ansible_host=192.168.122.33 hostname=node1-cluster-30 ip_addr=192.168.122.31
-node2-cluster-30   ansible_host=192.168.122.34 hostname=node2-cluster-30 ip_addr=192.168.122.32
-
+[cluster3]
+cluster3-controlplane1 ansible_host=192.168.122.30 hostname=cluster3-controlplane1 
+cluster3-node1 ansible_host=192.168.122.31 hostname=cluster3-node1              
 
 [all:vars]
-ansible_become_password=steve
-
+ansible_user=k8s 

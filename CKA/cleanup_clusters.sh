@@ -14,5 +14,6 @@ do
                 virsh destroy $vm; virsh undefine $vm --remove-all-storage
 	fi
 done
-
-
+virsh undefine node --remove-all-storage
+rm -f ./base-kvm.img
+cp ~/virtinstall-test/network-config.yaml .

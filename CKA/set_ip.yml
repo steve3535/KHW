@@ -3,20 +3,16 @@
   become: true
   gather_facts: no
   tasks:
+  - copy:
+      src: cka/
+      dest: /home/k8s/cka/
+      force: yes
   - name: set hostname
     hostname:
       name: "{{ hostname }}"
-  - name: Configure netplan
-    template:
-      src: netplan.j2
-      dest: /etc/netplan/00-installer-config.yaml
-      mode: 0400
-    vars:
-      interface_name: "enp1s0"
-      ip: "{{ ip_addr }}"
-      gateway: 192.168.122.1
-      dns: 192.168.122.1
-  - name: Apply netplan configuration
-    command:
-      cmd: netplan apply
-
+  - name: setup CRI
+    command: /home/steve/cka/setup-container.sh
+    ignore_errors: true
+  - name: setup KUBETOOLS
+    command: /home/steve/cka/setup-kubetools.sh
+    ignore_errors: true

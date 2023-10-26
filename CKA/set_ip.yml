@@ -11,8 +11,8 @@
     hostname:
       name: "{{ hostname }}"
   - name: setup CRI
-    command: /home/steve/cka/setup-container.sh
+    command: /home/k8s/cka/setup-container.sh
     ignore_errors: true
   - name: setup KUBETOOLS
-    command: /home/steve/cka/setup-kubetools.sh
+    command: /home/k8s/cka/setup-kubetools.sh
     ignore_errors: true

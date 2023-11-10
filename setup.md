@@ -66,7 +66,8 @@
   WantedBy=multi-user.target
 
   ```
-  
+  `systemctl daemon-reload`  
+  `systemctl restart containerd`  
 * Setup minimum CNI plugins    
   `mkdir -pv /opt/cni/bin`  
   `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
@@ -94,12 +95,14 @@ EOF
 `dnf install -y kubeadm kubectl kubelet --disableexcludes=kubernetes`  
  
 ### KUBEADM  
-* Fix the huge proxy problem that will happen upon **kubeadm init**
+* Fix the huge proxy problem that will happen upon **kubeadm init** (**OPTIONAL** -- **NO NEEDED ANYMORE**)  
   
   >systemctl set-environment https_proxy=lu726.lalux.local:80  
   >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1  
   >systemctl show-environment  
   >systemctl restart container  
   
-* 
+* iNSTALL CALICO FOR E.G.
+  `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`
+  
     

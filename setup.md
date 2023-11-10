@@ -1,26 +1,57 @@
-## RHEL
-* tested on Oopta (rhel 8.8)
-* setup proxy
-  0. prereqs (to avoid ssl errors due to lack of bumping or ssl options in the squid proxy)
-     * add FQDN of the proxy in /etc/hosts  
-     * add CA of the organization to the server: `cp /tmp/lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`    
-  1. rhsm (eventually)
-     set proxy_hostname and proxy_port in /etc/rhsm/rhsm.conf   
-  3. yum (eventually)
-     put proxy=http://proxy_ip:proxy_port in repos that need it  
-  5. general (for wget for e.g.)  
-     export https_proxy=proxy_ip:proxy_port  
-* subscribe the host  
-* subscribe to EPEL  
+## RHEL -tested on Oopta (rhel 8.8)
+* ensure a fixed IP address is used and add the hostname along with its ip addr in /etc/hosts (unless DNS reoslution is in place)
+* add CA of the organization to the server: `cp /tmp/lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`     
+* setup proxy at the OS level
+  ```bash
+  [steve@k8s-master ~]$ cat /etc/environment
+  HTTPS_PROXY=http://172.22.108.7:80
+  HTTP_PROXY=http://172.22.108.7:80
+  NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.108.0/24,172.17.0.0/16,172.22.56.0/24,200.1.1.0/24
+  https_proxy=http://172.22.108.7:80
+  http_proxy=http://172.22.108.7:80
+  no_proxy=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.108.0/24,172.17.0.0/16,172.22.56.0/24,200.1.1.0/24
+  [steve@k8s-master ~]$
+  ```
+* rhsm (eventually)
+    set proxy_hostname and proxy_port in /etc/rhsm/rhsm.conf
+* yum (eventually)
+    put proxy=http://proxy_ip:proxy_port in repos that need it  
+* subscribe the host (or mount the ISO of rhel in order to have a repo from which u can install conntrac and iproute-tc) 
+* subscribe to EPEL
   `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm [--no-check-certificate]`  
-  `dnf -y localinstall epel-release-latest-8.noarch.rpm`
+  `dnf -y localinstall epel-release-latest-8.noarch.rpm`  
+* install packages **iproute-tc** 
+  
 * Download and install a container runtime (containerd)
-  `export https_proxy=172.22.108.7:80; wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz`
-  `sudo -E wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service`
-  `systemctl daemon-reload && systemctl enable --now containerd`
+  `wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz`  
+  `sudo -E wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service`  
+  `systemctl daemon-reload && systemctl enable --now containerd`  
 * Download and install low level container engine (runc)
-  * `wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64`
+  * `wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64`  
   * `sudo install -m 755 runc.amd64 /usr/local/sbin/runc`
+* generate containerd config file and set cgroup driver to systemd:
+  `mkdir -pv /etc/containerd/ && containerd config default >/etc/containerd/config.toml`  
+  `sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml`
+* Set proxy for containerd:
+  ```bash
+  [root@k8s-master ~]# cat /etc/systemd/system/containerd.service
+[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target local-fs.target
+
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/local/bin/containerd
+Environment="HTTP_PROXY=http://172.22.108.7:80"
+Environment="HTTPS_PROXY=http://172.22.108.7:80"
+Environment="NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.56.0/24,172.17.0.0/16,200.1.1.0/24"
+Type=notify
+...
+[Install]
+WantedBy=multi-user.target
+
+  ```
 * Setup minimum CNI plugins  
   `mkdir -pv /opt/cni/bin`  
   `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  

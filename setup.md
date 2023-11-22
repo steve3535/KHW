@@ -44,7 +44,7 @@
   * `wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64`  
   * `sudo install -m 755 runc.amd64 /usr/local/sbin/runc`
 * generate containerd config file and set cgroup driver to systemd:  
-  `mkdir -pv /etc/containerd/ && containerd config default >/etc/containerd/config.toml`  
+  `mkdir -pv /etc/containerd/ && /usr/local/bin/containerd config default >/etc/containerd/config.toml`  
   `sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml`
 * Set proxy for containerd:  
   ```bash

@@ -101,7 +101,8 @@ EOF
   >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1  
   >systemctl show-environment  
   >systemctl restart container  
-  
+* enable kubelet
+* make sure hostname of master is in /etc/hosts , if not resolvable by DNS  
 * iNSTALL CALICO FOR E.G.
   `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`
   

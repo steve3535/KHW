@@ -9,9 +9,11 @@
   [steve@k8s-master ~]$ sudo cat /etc/modules-load.d/k8s.conf
   overlay
   br_netfilter
-  [steve@k8s-master ~]$  
+  [steve@k8s-master ~]$
+  ```   
 
-  Add these lines to /etc/sysctl.d/99-xxx.conf:  
+  Add these lines to /etc/sysctl.d/99-xxx.conf:
+  ```bash
   net.bridge.bridge-nf-call-iptables  = 1
   net.bridge.bridge-nf-call-ip6tables = 1
   net.ipv4.ip_forward                 = 1

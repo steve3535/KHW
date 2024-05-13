@@ -32,11 +32,12 @@
   http_proxy=http://172.22.108.7:80
   no_proxy=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.108.0/24,172.17.0.0/16,172.22.56.0/24,200.1.1.0/24
   [steve@k8s-master ~]$
-  ```  
-  ** some hicups regarding proxy
-     some tools might expect the form https_proxy=172.22.108.7:80 while others expect https_proxy=http://172.22.108.7:80
-     in such cases, i kept what most of the tools are compatible with in /etc/environment and use the other form in an ad hoc way with the rest of the tools. Example:
-     `http_proxy=172.22.108.7:80 https_proxy=172.22.108.7:80 dnf -y install iproute-tc`
+  ```
+  * reboot after setting up environment - i found that sourcing it does not work correctely  
+  * some hicups regarding proxy  
+    some tools might expect the form https_proxy=172.22.108.7:80 while others expect https_proxy=http://172.22.108.7:80  
+    in such cases, i kept what most of the tools are compatible with in /etc/environment and use the other form in an ad hoc way with the rest of the tools. Example:  
+    `http_proxy=172.22.108.7:80 https_proxy=172.22.108.7:80 dnf -y install iproute-tc`     
   
 * rhsm (eventually)  
     set proxy_hostname and proxy_port in /etc/rhsm/rhsm.conf

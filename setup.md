@@ -3,16 +3,18 @@
 * add CA of the organization to the server: `cp /tmp/lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`
 * disable swap
 * disable firewalld
-* enable forwarding and load required kernel modules
+* enable forwarding and load required kernel modules  
+  start with modules loading because of of the sysctl rules depend on br_netfilter module (*bridge*)  
   ```bash
-  [steve@k8s-master ~]$ sudo cat /etc/sysctl.d/98-k8s.conf
-  net.bridge.bridge-nf-call-iptables  = 1
-  net.bridge.bridge-nf-call-ip6tables = 1
-  net.ipv4.ip_forward                 = 1
   [steve@k8s-master ~]$ sudo cat /etc/modules-load.d/k8s.conf
   overlay
   br_netfilter
-  [steve@k8s-master ~]$
+  [steve@k8s-master ~]$  
+
+  Add these lines to /etc/sysctl.d/99-xxx.conf:  
+  net.bridge.bridge-nf-call-iptables  = 1
+  net.bridge.bridge-nf-call-ip6tables = 1
+  net.ipv4.ip_forward                 = 1
   ```
   remember to set it in /etc/sysctl.d/99-xxx.conf  
 * setup proxy at the OS level  

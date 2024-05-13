@@ -11,7 +11,10 @@
   br_netfilter
   [steve@k8s-master ~]$
   ```   
-
+  reboot and check effectiveness with:  
+  ```bash
+  lsmod | grep -E 'netfilter|overlay'
+  ```  
   Add these lines to /etc/sysctl.d/99-xxx.conf:
   ```bash
   net.bridge.bridge-nf-call-iptables  = 1

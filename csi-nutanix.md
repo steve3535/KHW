@@ -1,4 +1,5 @@
 ### Initial Install  
+* https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_6:CSI-Volume-Driver-v2_6
 * install the iscsi-initiator-utils on all worker nodes  
 * install eventually the multipathd driver  
 * setenforce 0 on workers  

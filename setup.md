@@ -51,6 +51,7 @@
   
 * Download and install a container runtime (containerd)  
   `wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz`  
+  `cp bin/containerd* /usr/local/bin/`  
   `sudo -E wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service`  
   `systemctl daemon-reload && systemctl enable --now containerd`  
 * Download and install low level container engine (runc)  

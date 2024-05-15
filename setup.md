@@ -120,7 +120,12 @@ EOF
   >systemctl restart container  
 * enable kubelet
 * make sure hostname of master is in /etc/hosts , if not resolvable by DNS  
-* iNSTALL CALICO FOR E.G.
+* iNSTALL CALICO FOR E.G. -- onlz on master --
   `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`
-  
+
+### INSTALL HELM
+ wget https://get.helm.sh/helm-v3.15.0-rc.2-linux-amd64.tar.gz  
+ mv helm/linux-amd64/helm /usr/local/bin/
+ 
+ 
     

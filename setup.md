@@ -24,9 +24,9 @@
   `lsmod | grep -E 'netfilter|overlay'`  
 
   Add these lines to /etc/sysctl.d/99-xxx.conf:
-  >net.bridge.bridge-nf-call-iptables  = 1
-  net.bridge.bridge-nf-call-ip6tables = 1
-  net.ipv4.ip_forward                 = 1
+  >net.bridge.bridge-nf-call-iptables  = 1  
+  net.bridge.bridge-nf-call-ip6tables = 1  
+  net.ipv4.ip_forward                 = 1  
   
   * *Restricted environments:* setup proxy at the OS level  
   ```bash

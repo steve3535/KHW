@@ -55,40 +55,49 @@
 * (optional) install other useful packages: vim, bash-completion, wget, nmap-ncat, tar  
 * Download and install a container runtime (containerd)  
   ```bash
-     wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz
+     wget https://github.com/containerd/containerd/releases/download/v1.7.17/containerd-1.7.17-linux-amd64.tar.gz
      cp bin/containerd* /usr/local/bin/
      cp bin/ctr* /usr/local/bin/  
      wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service
      systemctl daemon-reload && systemctl enable --now containerd
   ```  
 * Download and install low level container engine (runc)  
-  * `wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64`  
-  * `sudo install -m 755 runc.amd64 /usr/local/sbin/runc`
-* generate containerd config file and set cgroup driver to systemd:  
-  `mkdir -pv /etc/containerd/ && /usr/local/bin/containerd config default >/etc/containerd/config.toml`  
-  `sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml`
-* Set proxy for containerd:  
   ```bash
-  [root@k8s-master ~]# cat /etc/systemd/system/containerd.service
-  [Unit]
-  Description=containerd container runtime
-  Documentation=https://containerd.io
-  After=network.target local-fs.target
-
-  [Service]
-  ExecStartPre=-/sbin/modprobe overlay
-  ExecStart=/usr/local/bin/containerd
-  Environment="HTTP_PROXY=http://172.22.108.7:80"
-  Environment="HTTPS_PROXY=http://172.22.108.7:80"
-  Environment="NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.56.0/24,172.17.0.0/16,200.1.1.0/24"
-  Type=notify
-  ...
-  [Install]
-  WantedBy=multi-user.target
-
+  wget https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64 
+  sudo install -m 755 runc.amd64 /usr/local/sbin/runc
   ```
-  `systemctl daemon-reload`  
-  `systemctl restart containerd`  
+  **Notes:**
+  > * runc is actually required for containerd to work.
+  > * install is used instead of a simple cp, because its more appropriate for binaries (preseerve permissions, create directories if required, etc ..)  
+  
+* generate containerd config file and set cgroup driver to systemd:  
+  ```bash
+  mkdir -pv /etc/containerd/ && /usr/local/bin/containerd config default >/etc/containerd/config.toml
+  sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+  ```  
+  * *Restricted environment*:   
+     Set proxy for containerd:  
+     ```bash
+     cat EOF <</etc/systemd/system/containerd.service
+     [Unit]
+     Description=containerd container runtime
+     Documentation=https://containerd.io
+     After=network.target local-fs.target
+
+     [Service]
+     ExecStartPre=-/sbin/modprobe overlay
+     ExecStart=/usr/local/bin/containerd
+     Environment="HTTP_PROXY=http://172.22.108.7:80"
+     Environment="HTTPS_PROXY=http://172.22.108.7:80"
+     Environment="NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.56.0/24,172.17.0.0/16,200.1.1.0/24"
+     Type=notify
+     ...
+     ...
+     [Install]
+     WantedBy=multi-user.target
+     ```  
+  `systemctl daemon-reload && systemctl restart containerd`
+  
 * Setup minimum CNI plugins    
   `mkdir -pv /opt/cni/bin`  
   `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  

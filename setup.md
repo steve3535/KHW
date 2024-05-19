@@ -98,7 +98,8 @@
      ```  
   `systemctl daemon-reload && systemctl restart containerd`
   
-* Setup minimum CNI plugins    
+* Setup minimum CNI plugins
+  this step is capital.   
   `mkdir -pv /opt/cni/bin`  
   `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
   `tar Cxzvf /opt/cni/bin/ cni-plugins-linux-amd64-v1.3.0.tgz`  

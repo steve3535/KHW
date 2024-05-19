@@ -40,21 +40,19 @@
   EOF
   ```
   * reboot after setting up environment - i found that sourcing it does not work correctely  
-  * some hicups regarding proxy  
-    some tools might expect the form https_proxy=172.22.108.7:80 while others expect https_proxy=http://172.22.108.7:80  
-    in such cases, i kept what most of the tools are compatible with in /etc/environment and use the other form in an ad hoc way with the rest of the tools. Example:  
-    `http_proxy=172.22.108.7:80 https_proxy=172.22.108.7:80 dnf -y install iproute-tc`     
-  
+    
 * rhsm (eventually)  
-    set proxy_hostname and proxy_port in /etc/rhsm/rhsm.conf
+  set proxy_hostname and proxy_port in /etc/rhsm/rhsm.conf  
 * yum (eventually)  
-    put proxy=http://proxy_ip:proxy_port in repos that need it  
+  put proxy=http://proxy_ip:proxy_port in repos that need it     
 * subscribe the host (or mount the ISO of rhel in order to have a repo from which u can install conntrac and iproute-tc) 
-* subscribe to EPEL  
-  `wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm [--no-check-certificate]`  
-  `dnf -y localinstall epel-release-latest-8.noarch.rpm`  
-* install packages **iproute-tc** 
-  
+* subscribe to EPEL and install iproute-tc   
+  ```bash
+   wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm [--no-check-certificate] 
+   dnf -y localinstall epel-release-latest-8.noarch.rpm
+   dnf -y install iproute-tc
+  ``` 
+* (optional) install other useful packages: vim, bash-completion, wget, nmap-ncat, tar  
 * Download and install a container runtime (containerd)  
   ```bash
      wget https://github.com/containerd/containerd/releases/download/v1.7.7/containerd-1.7.7-linux-amd64.tar.gz

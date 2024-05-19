@@ -52,7 +52,7 @@
    dnf -y localinstall epel-release-latest-8.noarch.rpm
    dnf -y install iproute-tc
   ``` 
-* (optional) install other useful packages: vim, bash-completion, wget, nmap-ncat, tar  
+* (optional) install other useful packages: vim bash-completion wget nmap-ncat tar  
 * Download and install a container runtime (containerd)  
   ```bash
      wget https://github.com/containerd/containerd/releases/download/v1.7.17/containerd-1.7.17-linux-amd64.tar.gz
@@ -97,19 +97,24 @@
      WantedBy=multi-user.target
      ```  
   `systemctl daemon-reload && systemctl restart containerd`
+
+* Unit Test the CRI
+  * pull some image: `sudo -E /usr/local/bin/ctr image pull docker.io/library/alpine:latest`  
+  * ```bash
+       wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz
+       tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz
+       nerdctl run -d --name nginx -p 80:80 nginx:alpine
+    ```  
   
 * Setup minimum CNI plugins
-  this step is capital.   
-  `mkdir -pv /opt/cni/bin`  
-  `wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
-  `tar Cxzvf /opt/cni/bin/ cni-plugins-linux-amd64-v1.3.0.tgz`  
-  
-* Test the CRI
-  * pull some image: `sudo -E /usr/local/bin/ctr image pull docker.io/library/alpine:latest`  
-  * ` wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz`  
-  * `tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz`  
-  * `nerdctl run -d --name nginx -p 80:80 nginx:alpine`  
-
+  >this step is capital. Without CNI, the k8s network model cant work, kubeadm will install the initial setup but the api-server wont be listening and most pods wont start
+  >Interestingly, one can think because of calico, no need for these standard plugins, but applying the calico manifest depends on the availability of the CNI plugins
+  >and the path needs to be /opt/cni/bin  
+  ```bash
+     mkdir -pv /opt/cni/bin
+     wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
+     tar Cxzvf /opt/cni/bin/ cni-plugins-linux-amd64-v1.3.0.tgz
+  ```   
 * Download the kubernetes tools: kubeadm, kubectl and kubelet  
 ```bash
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
@@ -125,21 +130,24 @@ EOF
 ```  
 `dnf install -y kubeadm kubectl kubelet --disableexcludes=kubernetes`  
  
-### KUBEADM  
-* Fix the huge proxy problem that will happen upon **kubeadm init** (**OPTIONAL** -- **NO NEEDED ANYMORE**)  
-  
+### INIT WITH KUBEADM  
+* kubeadm init: `kubeadm init`   
+  >(OPTIONAL) manual proxy settings  
   >systemctl set-environment https_proxy=lu726.lalux.local:80  
   >systemctl set-environment no_proxy=127.0.0.1,200.1.1.53,10.96.0.1,10.4.0.1  
   >systemctl show-environment  
-  >systemctl restart container  
+  >systemctl restart container
+  
 * enable kubelet
 * make sure hostname of master is in /etc/hosts , if not resolvable by DNS  
-* iNSTALL CALICO FOR E.G. -- onlz on master --
-  `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`
+* iNSTALL CALICO -- only on master --  
+  `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`  
 
 ### INSTALL HELM
- wget https://get.helm.sh/helm-v3.15.0-rc.2-linux-amd64.tar.gz  
- mv helm/linux-amd64/helm /usr/local/bin/
+ ```bash
+    wget https://get.helm.sh/helm-v3.15.0-rc.2-linux-amd64.tar.gz  
+    mv helm/linux-amd64/helm /usr/local/bin/
+ ```
  
  
     

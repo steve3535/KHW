@@ -1,8 +1,17 @@
+## Prereqs  
+* setup DNS, authoritative for the k8s zone - use bind named for e.g.
+  * Otherwise, use fixed IP addresses and populate each node's /etc/hosts 
+* OS tested: rhel 8.x, rocky 9.x 
+* *Restricted environments*:
+  * Install the CA of your org in each of the nodes:  
+    `scp lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`
+    
 ## RHEL -tested on Oopta (rhel 8.8)
-* ensure a fixed IP address is used and add the hostname along with its ip addr in /etc/hosts (unless DNS reoslution is in place)
-* add CA of the organization to the server: `cp /tmp/lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`
 * disable swap
+  1. `swapoff -a`
+  2. comment the swap line in /etc/fstab  
 * disable firewalld
+  `systemctl disable --now firewalld`  
 * enable forwarding and load required kernel modules  
   start with modules loading because of of the sysctl rules depend on br_netfilter module (*bridge*)  
   ```bash

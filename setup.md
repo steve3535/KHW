@@ -6,41 +6,39 @@
   * Install the CA of your org in each of the nodes:  
     `scp lalux.pem /etc/pki/tls/ca-certs/sources/anchors && update-ca-trust`
     
-## RHEL -tested on Oopta (rhel 8.8)
+## RHEL (as root unless otherwise specified)
 * disable swap
   1. `swapoff -a`
   2. comment the swap line in /etc/fstab  
-* disable firewalld
+* disable firewalld  
   `systemctl disable --now firewalld`  
-* enable forwarding and load required kernel modules  
-  start with modules loading because of of the sysctl rules depend on br_netfilter module (*bridge*)  
+* load required kernel modules enable and forwarding    
+  >start with modules loading because of sysctl rules depend on br_netfilter module (*bridge*)  
   ```bash
-  [steve@k8s-master ~]$ sudo cat /etc/modules-load.d/k8s.conf
+  cat EOF <</etc/modules-load.d/k8s.conf
   overlay
   br_netfilter
-  [steve@k8s-master ~]$
+  EOF
   ```   
   reboot and check effectiveness with:  
-  ```bash
-  lsmod | grep -E 'netfilter|overlay'
-  ```  
+  `lsmod | grep -E 'netfilter|overlay'`  
+
   Add these lines to /etc/sysctl.d/99-xxx.conf:
-  ```bash
+  >
   net.bridge.bridge-nf-call-iptables  = 1
   net.bridge.bridge-nf-call-ip6tables = 1
   net.ipv4.ip_forward                 = 1
-  ```
-  remember to set it in /etc/sysctl.d/99-xxx.conf  
-* setup proxy at the OS level  
+  
+  * *Restricted environment:* setup proxy at the OS level  
   ```bash
-  [steve@k8s-master ~]$ cat /etc/environment
+  cat EOF <</etc/environment
   HTTPS_PROXY=http://172.22.108.7:80
   HTTP_PROXY=http://172.22.108.7:80
   NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.108.0/24,172.17.0.0/16,172.22.56.0/24,200.1.1.0/24
   https_proxy=http://172.22.108.7:80
   http_proxy=http://172.22.108.7:80
   no_proxy=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.108.0/24,172.17.0.0/16,172.22.56.0/24,200.1.1.0/24
-  [steve@k8s-master ~]$
+  EOF
   ```
   * reboot after setting up environment - i found that sourcing it does not work correctely  
   * some hicups regarding proxy  

@@ -12,7 +12,7 @@
   2. comment the swap line in /etc/fstab  
 * disable firewalld  
   `systemctl disable --now firewalld`  
-* load required kernel modules enable and forwarding    
+* load required kernel modules and enable forwarding    
   >start with modules loading because of sysctl rules depend on br_netfilter module (*bridge*)  
   ```bash
   cat EOF <</etc/modules-load.d/k8s.conf
@@ -24,12 +24,11 @@
   `lsmod | grep -E 'netfilter|overlay'`  
 
   Add these lines to /etc/sysctl.d/99-xxx.conf:
-  >
-  net.bridge.bridge-nf-call-iptables  = 1
+  >net.bridge.bridge-nf-call-iptables  = 1
   net.bridge.bridge-nf-call-ip6tables = 1
   net.ipv4.ip_forward                 = 1
   
-  * *Restricted environment:* setup proxy at the OS level  
+  * *Restricted environments:* setup proxy at the OS level  
   ```bash
   cat EOF <</etc/environment
   HTTPS_PROXY=http://172.22.108.7:80

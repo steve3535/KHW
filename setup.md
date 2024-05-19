@@ -107,9 +107,9 @@
     ```  
   
 * Setup minimum CNI plugins
-  >this step is capital. Without CNI, the k8s network model cant work, kubeadm will install the initial setup but the api-server wont be listening and most pods wont start
-  >Interestingly, one can think because of calico, no need for these standard plugins, but applying the calico manifest depends on the availability of the CNI plugins
-  >and the path needs to be /opt/cni/bin  
+  >this step is capital. Without CNI, the k8s network model cant work, kubeadm will install the initial setup but the api-server wont be listening and most pods wont start  
+  >Interestingly, one can think because of calico, no need for these standard plugins, but applying the calico manifest depends on the availability of the CNI plugins  
+  >and the path needs to be /opt/cni/bin    
   ```bash
      mkdir -pv /opt/cni/bin
      wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
@@ -140,7 +140,7 @@ EOF
   
 * enable kubelet
 * make sure hostname of master is in /etc/hosts , if not resolvable by DNS  
-* iNSTALL CALICO -- only on master --  
+* Install calico -- only on master **as a regular user**--  
   `kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml`  
 
 ### INSTALL HELM

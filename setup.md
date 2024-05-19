@@ -145,9 +145,28 @@ EOF
 
 ### INSTALL HELM
  ```bash
-    wget https://get.helm.sh/helm-v3.15.0-rc.2-linux-amd64.tar.gz  
-    mv helm/linux-amd64/helm /usr/local/bin/
+    wget https://get.helm.sh/helm-v3.15.0-rc.2-linux-amd64.tar.gz
+    tar xzvf helm-v3.15.0-rc.2-linux-amd64.tar.gz
+    mv linux-amd64/helm /usr/local/bin/
  ```
  
- 
+ ## COREOS (Fedora)
+ ### Setup ssh key   
+ 1. Prepare http server on an utility server
+    ```bash
+    mkdir -pv coreos/{ignite-config,nginx}
+    docker run --name webrepo -d -p 8080:80 -v ${PWD}/ignite-config/:/usr/share/nginx/html/ignite-config -v ${PWD}/nginx/nginx.conf:/etc/nginx/conf.d/default.conf nginx
+    ```
+ 3. Download & butane tool
+    ```bash
+    cd coreos
+    docker run -i --rm --security-opt label=disable -v ${PWD}:/pwd --workdir /pwd quay.io/coreos/butane:release --pretty --strict example.bu > example.ign
+    ```
+ 6. from the live ISO, call the coreos-installer with the ignition parameter:
+    ```
+    coreos-installer install -I http://utility:8080/ignite-config/example.ign --insecure-ignition /dev/sda  
+    ```
+  
+    
+ 7. 
     

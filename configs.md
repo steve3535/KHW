@@ -41,3 +41,13 @@ kubectl edit validatingwebhookconfigurations.admissionregistration.k8s.io metall
 kubectl apply -f ipaddr.yaml
 ```
 * note that you can specify a given ip (part of the pool) in the service definition via the annotations.
+
+### Git sidecar  
+
+token developer = 2xV5Hk1WNF1Y6fguD1pN  
+account username (developer) = k8s_svc_acc   
+!! penser changer ladresse email adossée au svc_Acc  
+
+* aparemmemnt la ligne de cmd git est hyper sensible aux carcteres speciaux: autant eviter
+* `kubectl create secret generic git-secrets --from-literal git-username=k8s_svc_acc --from-literal git-password=2xV5Hk1WNF1Y6fguD1pN --from-literal git-host="lu687.lalux.local:8090"`
+* 

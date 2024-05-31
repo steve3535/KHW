@@ -108,5 +108,13 @@ spec:
 * it will then create a volume group in the storage container
 * the mounting process will trigger iscsi and iscsid on the worker to start communication with the target
 * the enable client external is automatically checked - no need to whitelist any IP
-* remember ReadWriteOnce will allow only one node at a time 
-h
+* remember ReadWriteOnce will allow only one node at a time
+
+### issues
+* **kayl went down**.
+* the storage was fine, pv, pvc were in a goot state
+* on the workers, seen broken pipes in the iscsi comm (systemctl status iscsi iscsid)
+* on the cluster itself, kubect get events --> show Failedmount state
+* i end up delete the pod (forcefully) and as expected the statefulset recreated it and it came back healthy, but it moved it to node02 (leudelange)
+* lsscsi can show that the node02 now have the control over the data volume
+  

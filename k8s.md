@@ -165,7 +165,8 @@ spec:
      done 
    ```
    * bien preter attention aux ; et a lindentation 
-   * metrics server -a bucher - `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/component.yaml`  
+   * metrics server -a bucher-
+      `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml`  
      * ensuite editer le deploy (c dans kube-system) et ajouter en argument du container: **--kubelet-insecure-tls**  
     
   

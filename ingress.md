@@ -2,8 +2,6 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
 - create a deployment of nginx web server with enough replicas in order to have many pods  
 - have the output of the default page showing the pod name on which the curl query is directed towards  
 
-
-
 ## Traefik: one proxy to rule them all 
 * A the heart of the routing: **ingress.yaml** - the name is arbitrary -
   ```bash
@@ -53,7 +51,6 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
             port: 80
     tls:
         secretName: "certs"
-
   ---
   apiVersion: traefik.io/v1alpha1
   kind: IngressRoute
@@ -72,3 +69,5 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
           - name: nginx-main
             port: 80
 ```
+* the HTTPS termination is done just by setting up a TLS secret:
+

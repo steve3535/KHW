@@ -70,5 +70,7 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
             port: 80
   ```
 
-* the HTTPS termination is done just by setting up a TLS secret:
+* the HTTPS termination is done just by setting up a TLS secret:  
+  `kubectl create secret tls certs --key certs/internal-tools.key --cert certs/internal-tools.cer --dry-run=client -o yaml >cert-secrets.yaml`
+* we have the web endpoint and the web-secure endpoint 
 

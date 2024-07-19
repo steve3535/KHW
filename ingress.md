@@ -69,5 +69,6 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
           - name: nginx-main
             port: 80
 ```
+
 * the HTTPS termination is done just by setting up a TLS secret:
 

@@ -16,7 +16,7 @@ helm show values traefik/traefik >/tmp/traefik.yaml
 
 `helm install traefik traefik/traefik --values /tmp/traefik.yaml -n traefik --create-namespace`  
 
-**Upgrade** 
+**Upgrade**:   
 `helm -n traefik upgrade traefik traefik/traefik -f /tmp/traefik.yaml`  
 
 

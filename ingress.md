@@ -16,6 +16,9 @@ helm show values traefik/traefik >/tmp/traefik.yaml
 
 `helm install traefik traefik/traefik --values /tmp/traefik.yaml -n traefik --create-namespace`  
 
+==>  to see values used post install:  
+`helm -n traefik get values traefik`  
+
 **Upgrade**:   
 `helm -n traefik upgrade traefik traefik/traefik -f /tmp/traefik.yaml`  
 

@@ -3,6 +3,23 @@ The goal of the exercise is to demonstrate the load balancer capabilities by usi
 - have the output of the default page showing the pod name on which the curl query is directed towards  
 
 ## Traefik: one proxy to rule them all 
+
+### Setup with Helm  
+
+```bash
+helm search repo traefik
+helm repo info traefik/traefik
+helm show chart traefik/traefik
+helm show values traefik/traefik >/tmp/traefik.yaml
+```  
+**Note**: the values file is used to cstomize the setup but will be consumed after installation  
+
+`helm install traefik traefik/traefik --values /tmp/traefik.yaml -n traefik --create-namespace`  
+
+**Upgrade** 
+`helm -n traefik upgrade traefik traefik/traefik -f /tmp/traefik.yaml`  
+
+
 * A the heart of the routing: **ingress.yaml** - the name is arbitrary -
   ```bash
   spec:

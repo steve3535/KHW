@@ -101,11 +101,6 @@
 
 * Unit Test the CRI
   * pull some image: `sudo -E /usr/local/bin/ctr image pull docker.io/library/alpine:latest`  
-  * ```bash
-       wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz
-       tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz
-       nerdctl run -d --name nginx -p 80:80 nginx:alpine
-    ```  
   
 * Setup minimum CNI plugins
   >this step is capital. Without CNI, the k8s network model cant work, kubeadm will install the initial setup but the api-server wont be listening and most pods wont start  
@@ -113,9 +108,16 @@
   >and the path needs to be /opt/cni/bin    
   ```bash
      mkdir -pv /opt/cni/bin
-     wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz`  
+     wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz  
      tar Cxzvf /opt/cni/bin/ cni-plugins-linux-amd64-v1.3.0.tgz
-  ```   
+  ```
+* Test after CNI is available:
+  ```bash
+       wget https://github.com/containerd/nerdctl/releases/download/v1.6.1/nerdctl-1.6.1-linux-amd64.tar.gz
+       tar Cxzvf /usr/local/bin/ nerdctl-1.6.1-linux-amd64.tar.gz
+       nerdctl run -d --name nginx -p 80:80 nginx:alpine
+  ```  
+
 * Download the kubernetes tools: kubeadm, kubectl and kubelet  
 ```bash
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo

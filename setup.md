@@ -79,7 +79,7 @@
   * *Restricted environment*:   
      Set proxy for containerd:  
      ```bash
-     cat EOF <</etc/systemd/system/containerd.service
+     /etc/systemd/system/containerd.service
      [Unit]
      Description=containerd container runtime
      Documentation=https://containerd.io
@@ -88,8 +88,8 @@
      [Service]
      ExecStartPre=-/sbin/modprobe overlay
      ExecStart=/usr/local/bin/containerd
-     Environment="HTTP_PROXY=http://172.22.108.7:80"
-     Environment="HTTPS_PROXY=http://172.22.108.7:80"
+     Environment="HTTP_PROXY=http://vsl-pro-squ-001:3128"
+     Environment="HTTPS_PROXY=http://vsl-pro-squ-001:3128"
      Environment="NO_PROXY=10.0.0.0/8,192.168.0.0/16,127.0.0.1,172.16.0.0/16,172.22.56.0/24,172.17.0.0/16,200.1.1.0/24"
      Type=notify
      ...

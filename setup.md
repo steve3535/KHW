@@ -15,7 +15,7 @@
 * load required kernel modules and enable forwarding    
   >start with modules loading because of sysctl rules depend on br_netfilter module (*bridge*)  
   ```bash
-  cat EOF <</etc/modules-load.d/k8s.conf
+  cat << EOF > /etc/modules-load.d/k8s.conf
   overlay
   br_netfilter
   EOF

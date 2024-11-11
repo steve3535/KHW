@@ -56,6 +56,7 @@
 * Download and install a container runtime (containerd)  
   ```bash
      wget https://github.com/containerd/containerd/releases/download/v1.7.17/containerd-1.7.17-linux-amd64.tar.gz
+     tar xzvf containerd-1.7.17-linux-amd64.tar.gz
      cp bin/containerd* /usr/local/bin/
      cp bin/ctr* /usr/local/bin/  
      wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -O /etc/systemd/system/containerd.service

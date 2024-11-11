@@ -127,7 +127,7 @@ baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
 enabled=1
 gpgcheck=1
 gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
-proxy=http://proxy_ip:proxy_port
+proxy=http://vsl-pro-squ-001:3128
 exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 ```  
